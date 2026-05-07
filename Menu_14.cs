@@ -23,7 +23,8 @@ namespace Menu_14
         {
             InitializeComponent();
             dataGridView1.CellClick += DataGridView1_CellClick; //  добавлено событие, нажатие на поле таблицы БД
-            button1_Click(null, null);        
+                                                                //        button1_Click(null, null);
+            button1_Click(this, EventArgs.Empty);
         }
 
         private void оснвныеДанныеИзBDMySQLToolStripMenuItem_Click(object sender, EventArgs e)   // выбор архива из папки
@@ -45,20 +46,46 @@ namespace Menu_14
 
         private void папкиСФотографиямиToolStripMenuItem_Click(object sender, EventArgs e) // очиста папаки с фотогрвфиями
         {
-            string targetDir = ConfigurationManager.AppSettings["catSubCutFotos"];
+            string? targetDir = ConfigurationManager.AppSettings["catSubCutFotos"];
+            // Проверяем, что директория указана
+            if (string.IsNullOrEmpty(targetDir))
+            {
+                Console.WriteLine("Ошибка: настройка 'catSubCutFotos' не найдена в конфигурации");
+                return;
+            }
+
+            // Проверяем, что директория существует
+            if (!Directory.Exists(targetDir))
+            {
+                Console.WriteLine($"Ошибка: директория '{targetDir}' не существует");
+                return;
+            }
 
             // Удалить все файлы
             foreach (string file in Directory.GetFiles(targetDir))
             {
-                File.Delete(file);
+                try
+                {
+                    File.Delete(file);
+                    Console.WriteLine($"Удален: {Path.GetFileName(file)}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Ошибка удаления {file}: {ex.Message}");
+                }
             }
+                //// Удалить все файлы
+                //foreach (string file in Directory.GetFiles(targetDir))
+                //{
+                //    File.Delete(file);
+                //}
 
-            // Удалить все подпапки (рекурсивно)
-            foreach (string directory in Directory.GetDirectories(targetDir))
-            {
-                Directory.Delete(directory, true);
+                //// Удалить все подпапки (рекурсивно)
+                //foreach (string directory in Directory.GetDirectories(targetDir))
+                //{
+                //    Directory.Delete(directory, true);
+                //}
             }
-        }
 
         private void namelatListToolStripMenuItem_Click(object sender, EventArgs e)  // проверка наличие названия name_lat в базе MySQL
         {
@@ -98,17 +125,17 @@ namespace Menu_14
                     dataGridView1.DataSource = dataTable;
 
                     // Настройка заголовков столбцов (опционально)
-                    dataGridView1.Columns["name_ru"].HeaderText = "Русское название";
-                    dataGridView1.Columns["name_lat"].HeaderText = "Латинское название";
-                    dataGridView1.Columns["time_first"].HeaderText = "Первая фиксация";
-                    dataGridView1.Columns["time_last"].HeaderText = "Последняя фиксация";
-                    dataGridView1.Columns["questionnaire"].HeaderText = "Типа, листовка";
+                    dataGridView1.Columns["name_ru"]?.HeaderText = "Русское название";
+                    dataGridView1.Columns["name_lat"]?.HeaderText = "Латинское название";
+                    dataGridView1.Columns["time_first"]?.HeaderText = "Первая фиксация";
+                    dataGridView1.Columns["time_last"]?.HeaderText = "Последняя фиксация";
+                    dataGridView1.Columns["questionnaire"]?.HeaderText = "Типа, листовка";
                     // Выделяем цветом поле name_lat для понимания, что оно кликабельное
-                    dataGridView1.Columns["name_lat"].DefaultCellStyle.ForeColor = System.Drawing.Color.Blue;
-                    dataGridView1.Columns["name_lat"].DefaultCellStyle.Font =
+                    dataGridView1.Columns["name_lat"]?.DefaultCellStyle.ForeColor = System.Drawing.Color.Blue;
+                    dataGridView1.Columns["name_lat"]?.DefaultCellStyle.Font =
                         new System.Drawing.Font(dataGridView1.Font, System.Drawing.FontStyle.Underline);
-                    dataGridView1.Columns["questionnaire"].DefaultCellStyle.ForeColor = System.Drawing.Color.Blue;
-                    dataGridView1.Columns["questionnaire"].DefaultCellStyle.Font =
+                    dataGridView1.Columns["questionnaire"]?.DefaultCellStyle.ForeColor = System.Drawing.Color.Blue;
+                    dataGridView1.Columns["questionnaire"]?.DefaultCellStyle.Font =
                         new System.Drawing.Font(dataGridView1.Font, System.Drawing.FontStyle.Underline);
 
                     // Автоматическая подстройка ширины столбцов
@@ -121,7 +148,7 @@ namespace Menu_14
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        private void DataGridView1_CellClick(object sender, DataGridViewCellEventArgs e) // Обработчик события клика мышкой по ячейке
+        private void DataGridView1_CellClick(object? sender, DataGridViewCellEventArgs e) // Обработчик события клика мышкой по ячейке
         {
             // Проверяем, что клик не по заголовку
             if (e.RowIndex < 0) return;
@@ -158,9 +185,9 @@ namespace Menu_14
         {
             try
             {
-                string parentFolder = ConfigurationManager.AppSettings["catSubCutFotos"];
+                string? parentFolder = ConfigurationManager.AppSettings["catSubCutFotos"];
                 // Путь к FastStone Image Viewer (обычно в Program Files)
-                string fastStonePath = ConfigurationManager.AppSettings["FastStone"];
+                string? fastStonePath = ConfigurationManager.AppSettings["FastStone"];
 
                 if (!System.IO.File.Exists(fastStonePath))
                 {
@@ -192,8 +219,8 @@ namespace Menu_14
 
         private void фотографииРастенийВыгрузкаАрхивToolStripMenuItem_Click(object sender, EventArgs e) // выгрузка из БД всех растений
         {
-            string sourceDirectory = ConfigurationManager.AppSettings["catSubCutFotos"];
-            string sevenZipPath = ConfigurationManager.AppSettings["UnZip"];
+            string? sourceDirectory = ConfigurationManager.AppSettings["catSubCutFotos"];
+            string? sevenZipPath = ConfigurationManager.AppSettings["UnZip"];
 
             // Диалог выбора места сохранения
             SaveFileDialog saveFileDialog = new SaveFileDialog
@@ -216,7 +243,7 @@ namespace Menu_14
                     Arguments = arguments,
                     UseShellExecute = false,
                     CreateNoWindow = true
-                }).WaitForExit();
+                })?.WaitForExit();
                 FileInfo archiveInfo = new FileInfo(archivePath);
                 setMethods.ProtocolT($"Архив сохранен: {archivePath}", $"Размер архива: {archiveInfo.Length / 1024.0 / 1024.0:F2} MB","Фотографии растений");
                 Console.WriteLine($"Архив создан: {archivePath}");
