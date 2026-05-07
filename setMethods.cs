@@ -104,37 +104,45 @@ namespace Menu_14
         {
             try
             {
-                string unZipDirectory = ConfigurationManager.AppSettings["catUnZip"];
-                if (Directory.Exists(unZipDirectory))
+                string zipPath = ConfigurationManager.AppSettings["floraBD"] + fileZIP;
+                string extractPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ExtractedData");
+
+                // Проверяем существование ZIP-файла
+                if (!File.Exists(zipPath))
                 {
-                    Directory.Delete(unZipDirectory, true); // true = рекурсивное удаление
-                    Console.WriteLine($"Директория удалена: {unZipDirectory}");
-                }
-                // Используем System.IO.Compression напрямую
-                using (var archive = System.IO.Compression.ZipFile.OpenRead(fileZIP))
-
-                {
-                    foreach (var entry in archive.Entries)
-                    {
-                        string destinationPath = Path.Combine(unZipDirectory, entry.FullName);
-
-                        // Создаем директории, если необходимо
-                        Directory.CreateDirectory(Path.GetDirectoryName(destinationPath));
-
-                        // Извлекаем файл
-                        entry.ExtractToFile(destinationPath, true);
-                        Console.WriteLine($"Распакован: {entry.FullName}");
-                    }
+                    Console.WriteLine($"Файл не найден: {zipPath}");
+                    return;
                 }
 
-                MessageBox.Show("Распаковка завершена успешно!");
-                //      найти файл .CSV, создать массив, провести проверки всех нижданчиков
-                CreatingArrayFromCSV(unZipDirectory);
+                // Создаем директорию для распаковки
+                Directory.CreateDirectory(extractPath);
+
+                // Распаковываем с перезаписью существующих файлов
+                ZipFile.ExtractToDirectory(zipPath, extractPath, true);
+
+                Console.WriteLine($"✅ Файл успешно распакован в: {extractPath}");
+
+                // Выводим список распакованных файлов
+                var files = Directory.GetFiles(extractPath, "*", SearchOption.AllDirectories);
+                Console.WriteLine($"\nРаспаковано файлов: {files.Length}");
+                foreach (var file in files)
+                {
+                    Console.WriteLine($"  - {Path.GetFileName(file)}");
+                }
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine($"Ошибка ввода-вывода: {ex.Message}");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                Console.WriteLine($"Нет доступа: {ex.Message}");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Ошибка при обработке файла: {ex.Message}");
+                Console.WriteLine($"Ошибка при распаковке: {ex.Message}");
             }
+
         }
         static void CreatingArrayFromCSV(string WorkDirectoryFromCSV) // построить, проверить массив из CSV файла
         {
