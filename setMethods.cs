@@ -26,7 +26,7 @@ namespace Menu_14
     {
         public static void ProtocolT(string name, string description, string comment) // фиксация события в коде
         {
-            string initialBD = ConfigurationManager.AppSettings["floraBD"];
+            string? initialBD = ConfigurationManager.AppSettings["floraBD"];
             string connectionString = "server=localhost;database=" + initialBD + ";uid=root;password=root";
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -77,7 +77,7 @@ namespace Menu_14
                 }
             }
         }
-        public static void choiceFile(string folderPath) // поиск первого архива
+        public static void choiceFile(string? folderPath) // поиск первого архива
         {
             folderPath = ConfigurationManager.AppSettings["catExport"];
             //    string folderPath = @"C:\Your\Folder\Path"; // Путь к каталогу
@@ -104,7 +104,7 @@ namespace Menu_14
         {
             try
             {
-                string zipPath = ConfigurationManager.AppSettings["floraBD"] + fileZIP;
+                string zipPath = ConfigurationManager.AppSettings["catUnZip"] + fileZIP;
                 string extractPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ExtractedData");
 
                 // Проверяем существование ZIP-файла
@@ -269,7 +269,7 @@ namespace Menu_14
         }
         public static void InsertRecordTableBD(string[,] arrayXX, int nr) // запись новой строки в БД 
         {
-            string connectionString = ConfigurationManager.AppSettings["floraBD"];
+            string? connectionString = ConfigurationManager.AppSettings["floraBD"];
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 string query = "INSERT INTO plants (name_lat, name_ru, time_first, time_last, score, latitude, longitude, accuracy, notes, tags, preducations, questionnaire) " +
@@ -403,9 +403,9 @@ namespace Menu_14
 
         public static void subfolderAndFiles(string subFolderZip, string destiSubFoto) // создаём подпапки и добавляем фотографиями
         {
-            string parentFolder = ConfigurationManager.AppSettings["catSubCutFotos"];
-            string fullPath = Path.Combine(parentFolder, destiSubFoto);  // куда будем копировать фото
-            string sourceDir = ConfigurationManager.AppSettings["catUnZip"];
+            string? parentFolder = ConfigurationManager.AppSettings["catSubCutFotos"];
+            string fullPath = Path.Combine(parentFolder ?? "", destiSubFoto ?? "");  // куда будем копировать фото
+            string? sourceDir = ConfigurationManager.AppSettings["catUnZip"];
             sourceDir = sourceDir + subFolderZip + "\\";
 
             if (Directory.Exists(fullPath))
@@ -415,18 +415,18 @@ namespace Menu_14
             else
             {
                 Console.WriteLine("Будем создавать подкаталог!");
-                string fullPathCreate = Path.Combine(parentFolder, destiSubFoto);
+                string fullPathCreate = Path.Combine(parentFolder ?? "", destiSubFoto ?? "");
                 Directory.CreateDirectory(fullPathCreate);
                 parentFolder = parentFolder + destiSubFoto + "\\";           // путь теперь нацелен в подкаталог
                 // Получаем все файлы из исходного каталога
                 string sourceDirZip = ConfigurationManager.AppSettings["catSubCutFotos"] + destiSubFoto; ;
                 string[] files = Directory.GetFiles(sourceDir);
-                setMethods.ProtocolT(parentFolder, destiSubFoto, "");
+                setMethods.ProtocolT(parentFolder ?? "", destiSubFoto ?? "", "");
                 // Копируем каждый файл
                 foreach (string file in files)
                 {
                     string fileName = Path.GetFileName(file);
-                    string destFile = Path.Combine(parentFolder, fileName);
+                    string destFile = Path.Combine(parentFolder ?? "", fileName ?? "");
 
                     // Копируем файл (третий параметр - разрешить перезапись)
                     File.Copy(file, destFile, true);
@@ -436,9 +436,9 @@ namespace Menu_14
         }
         public static void weAddFotos(string subFolderZip, string destiSubFoto) // в существующие подпапки добавляем фото, меняем поле time_last in MySQL
         {
-            string parentFolder = ConfigurationManager.AppSettings["catSubCutFotos"];
-            string fullPath = Path.Combine(parentFolder, destiSubFoto);  // куда будем копировать фото
-            string sourceDir = ConfigurationManager.AppSettings["catUnZip"];
+            string? parentFolder = ConfigurationManager.AppSettings["catSubCutFotos"];
+            string? fullPath = Path.Combine(parentFolder!, destiSubFoto);  // куда будем копировать фото
+            string? sourceDir = ConfigurationManager.AppSettings["catUnZip"];
             sourceDir = sourceDir + subFolderZip + "\\";
 
             string normalized = subFolderZip.Replace('_', ':');
