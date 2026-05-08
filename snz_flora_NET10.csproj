@@ -13,6 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
+    <PackageReference Include="Microsoft.Extensions.AI" Version="10.5.2" />
     <PackageReference Include="Microsoft.Extensions.AI.OpenAI" Version="10.5.2" />
     <PackageReference Include="MySql.Data" Version="9.7.0" />
     <PackageReference Include="MySqlConnector" Version="2.5.0" />
