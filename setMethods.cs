@@ -105,9 +105,9 @@ namespace Menu_14
         {
             try
             {
-                string zipPath = ConfigurationManager.AppSettings["catUnZip"] + fileZIP;
+                string zipPath = fileZIP;
                 string extractPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ExtractedData");
-
+                string? unZipDirectory = ConfigurationManager.AppSettings["catUnZip"];
                 // Проверяем существование ZIP-файла
                 if (!File.Exists(zipPath))
                 {
@@ -130,6 +130,7 @@ namespace Menu_14
                 {
                     Console.WriteLine($"  - {Path.GetFileName(file)}");
                 }
+                CreatingArrayFromCSV(unZipDirectory!);
             }
             catch (IOException ex)
             {
