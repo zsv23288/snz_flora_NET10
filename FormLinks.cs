@@ -31,7 +31,7 @@ namespace Menu_14
 
 
 
-        private void TriadElements_MouseClick(object sender, MouseEventArgs e)
+        private void TriadElements_MouseClick(object? sender, MouseEventArgs e)
         {
             // Проверяем, что нажата левая кнопка мыши
             if (e.Button == MouseButtons.Left)
@@ -41,10 +41,11 @@ namespace Menu_14
 
                 if (index != ListBox.NoMatches)
                 {
-                    string clickedItem = triadElements.Items[index].ToString();
+                    string? clickedItem = triadElements.Items[index].ToString();
 
                     // Проверяем, является ли элемент ссылкой (начинается с http:// или https://)
-                    if (clickedItem.StartsWith("http://") || clickedItem.StartsWith("https://"))
+                    //               if (clickedItem.StartsWith("http://") || clickedItem.StartsWith("https://"))
+                    if (clickedItem?.StartsWith("http://") == true || clickedItem?.StartsWith("https://") == true)
                     {
                         try
                         {
@@ -72,7 +73,7 @@ namespace Menu_14
             form.labelNameRuShow.Text = nameRu;
             form.nameLat.Text = NameLat;
             string folderPath = ConfigurationManager.AppSettings["catSubCutFotos"] + NameLat;
-            string firstFile = Directory.EnumerateFiles(folderPath).FirstOrDefault();
+            string? firstFile = Directory.EnumerateFiles(folderPath).FirstOrDefault();
             if (firstFile != null)
             {
                 form.pictureBox1.Image = Image.FromFile(firstFile); //change 44
@@ -135,10 +136,10 @@ namespace Menu_14
         // Класс для хранения элементов
         public class ListBoxItem
         {
-            public string Text { get; set; }
+            public string? Text { get; set; }
             public bool IsLink { get; set; }
 
-            public override string ToString()
+            public override string? ToString()
             {
                 return Text;
             }
@@ -149,9 +150,9 @@ namespace Menu_14
         {
             if (e.Index < 0) return;
 
-            ListBox listBox = sender as ListBox;
+            ListBox? listBox = sender as ListBox;
             ListBoxItem item = listBox.Items[e.Index] as ListBoxItem;
-
+           
             if (item == null) return;
 
             e.DrawBackground();
@@ -160,7 +161,9 @@ namespace Menu_14
 
             using (Brush brush = new SolidBrush(textColor))
             {
-                e.Graphics.DrawString(item.Text, e.Font, brush, e.Bounds);
+                Font fontToUse = e.Font ?? SystemFonts.DefaultFont;
+                e.Graphics.DrawString(item.Text, fontToUse, brush, e.Bounds);
+                // e.Graphics.DrawString(item.Text, e.Font, brush, e.Bounds);
             }
 
             e.DrawFocusRectangle();
@@ -171,10 +174,10 @@ namespace Menu_14
         public void pictureBox1_Click(object sender, EventArgs e) // запуск FastStone с указаным каталогом
         {
              // Путь к FastStone Image Viewer (обычно в Program Files)
-            string fastStonePath = ConfigurationManager.AppSettings["FastStone"];
+            string? fastStonePath = ConfigurationManager.AppSettings["FastStone"];
 
             // Запускаем FastStone с параметром (путь к изображению)
-            Process.Start(fastStonePath, $"\"{currentFolderPath}\"");
+            Process.Start(fastStonePath!, $"\"{currentFolderPath}\"");
         }
         /// <summary>
         /// Разделяет строку на массив подстрок, каждая из которых помещается в заданную ширину ListBox.
@@ -326,7 +329,7 @@ namespace Menu_14
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
-                        questionnaire = result.ToString();
+                        questionnaire = result?.ToString() ?? string.Empty;
                     }
                 }
                 catch (Exception ex)
