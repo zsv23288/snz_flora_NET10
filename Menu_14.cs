@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿//using MySql.Data.MySqlClient;
+using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -267,9 +268,19 @@ namespace Menu_14
 
         private void инструкцияПользователяToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string filePath = Path.GetFullPath(Path.Combine(Application.StartupPath, @"..\..\instrFloraSNZ.docx"));
+            string? filePath = ConfigurationManager.AppSettings["instrFloraSNZ"];
 
-            System.Diagnostics.Process.Start(filePath);
+            // System.Diagnostics.Process.Start(filePath);
+            if (!string.IsNullOrEmpty(filePath))
+            {
+                //  System.Diagnostics.Process.Start(filePath);
+                Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
+            }
+            else
+            {
+                // Обработка случая, когда путь не задан
+                MessageBox.Show("Путь к файлу не указан");
+            }
         }
 
         private void дополнеиередакторСсылкИзИнтеретаToolStripMenuItem_Click(object sender, EventArgs e)

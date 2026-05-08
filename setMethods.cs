@@ -10,7 +10,8 @@ using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
+// using MySql.Data.MySqlClient;
+using MySqlConnector;
 namespace Menu_14
 {
 
@@ -461,7 +462,7 @@ namespace Menu_14
                     {
                         command.Parameters.AddWithValue("@nameLat", searchName);
 
-                        object result = command.ExecuteScalar();
+                        object? result = command.ExecuteScalar();
 
                         if (result != null)
                         {
