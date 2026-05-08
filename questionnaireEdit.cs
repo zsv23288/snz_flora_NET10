@@ -15,7 +15,7 @@ namespace Menu_14
     public partial class questionnaireEdit : Form
     {
         private string connectionString = "Server=localhost;Database=snz_flora;Uid=root;Pwd=root;";
-        private string currentNameLat;
+        private string currentNameLat = string.Empty;
 
         public questionnaireEdit()
        {
