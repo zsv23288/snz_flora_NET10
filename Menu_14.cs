@@ -11,6 +11,8 @@ using System.IO.Compression;
 // using System.IO.Compression.FileSystem;
 using System.Linq;
 using System.Text;
+using System.Text.Json;  // Добавьте это для работы с JSON
+using System.Net.Http;   // Добавьте это для HTTP запросов
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -282,9 +284,163 @@ namespace Menu_14
             }
         }
 
-        private void дополнеиередакторСсылкИзИнтеретаToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void дополнеиередакторСсылкИзИнтеретаToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // пойдём своим путём!!
+            // Отключаем пункт меню на время выполнения
+            var menuItem = sender as ToolStripMenuItem;
+            if (menuItem != null) menuItem.Enabled = false;
+
+            try
+            {
+                string inputFilePath = "D:\\ALLZSV\\myHomeland\\floraZSV\\DeepSeek\\query\\2026.05.09-06.05.17.txt";
+                string outputFilePath = "D:\\ALLZSV\\myHomeland\\floraZSV\\DeepSeek\\result\\result.txt";
+
+                // 1. Проверяем существование файла с запросом
+                if (!File.Exists(inputFilePath))
+                {
+                    MessageBox.Show($"Файл запроса не найден: {inputFilePath}",
+                                  "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // 2. Читаем запрос из файла
+                string userPrompt = File.ReadAllText(inputFilePath, Encoding.UTF8);
+
+                if (string.IsNullOrWhiteSpace(userPrompt))
+                {
+                    MessageBox.Show("Файл запроса пуст!", "Ошибка",
+                                  MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Показываем пользователю, что процесс начался
+                MessageBox.Show($"Запрос прочитан ({userPrompt.Length} символов).\nОтправляю в Google AI...",
+                               "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // 3. Получаем API ключ (лучше из переменных окружения или конфигурации)
+                string? apiKey = GetApiKey();
+
+                if (string.IsNullOrEmpty(apiKey))
+                {
+                    MessageBox.Show("API ключ Google не найден!\n" +
+                                  "Установите переменную окружения GOOGLE_API_KEY или укажите ключ в коде.",
+                                  "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // 4. Отправляем запрос в Google Gemini AI
+                string aiResponse = await SendToGoogleGeminiAsync(userPrompt, apiKey);
+
+                // 5. Записываем результат в файл
+                File.WriteAllText(outputFilePath, aiResponse ?? "Ответ не получен", Encoding.UTF8);
+
+                // 6. Уведомляем пользователя об успехе
+                MessageBox.Show($"Результат сохранен в файл: {outputFilePath}\n" +
+                               $"Длина ответа: {(aiResponse?.Length ?? 0)} символов",
+                               "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}\n\n{ex.StackTrace}",
+                               "Критическая ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                // Включаем пункт меню обратно
+                if (menuItem != null) menuItem.Enabled = true;
+            }
+        }
+
+        // Метод для получения API ключа
+        private string? GetApiKey()
+        {
+            // Приоритет 1: переменная окружения
+            string? apiKey = Environment.GetEnvironmentVariable("GOOGLE_API_KEY");
+
+            if (!string.IsNullOrEmpty(apiKey))
+                return apiKey;
+
+            // Приоритет 2: из файла конфигурации (если есть)
+            try
+            {
+                if (File.Exists("appsettings.txt"))
+                {
+                    string config = File.ReadAllText("appsettings.txt");
+                    var lines = config.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var line in lines)
+                    {
+                        if (line.StartsWith("GOOGLE_API_KEY="))
+                        {
+                            return line.Substring("GOOGLE_API_KEY=".Length);
+                        }
+                    }
+                }
+            }
+            catch { /* Игнорируем ошибки чтения конфига */ }
+
+            // Приоритет 3: вернуть строку для ручной вставки (ЗАМЕНИТЕ НА ВАШ КЛЮЧ!)
+            // return "ВАШ_API_КЛЮЧ_ЗДЕСЬ";
+
+            return null;
+        }
+
+        // Метод для отправки запроса в Google Gemini
+        private async Task<string> SendToGoogleGeminiAsync(string prompt, string apiKey)
+        {
+            // Используем HttpClient напрямую (без сторонних библиотек)
+            using var httpClient = new HttpClient();
+
+            // Формируем запрос к Gemini API
+            var requestBody = new
+            {
+                contents = new[]
+                {
+            new
+            {
+                parts = new[]
+                {
+                    new { text = prompt }
+                }
+            }
+        },
+                generationConfig = new
+                {
+                    temperature = 0.7,
+                    maxOutputTokens = 2048
+                }
+            };
+
+            string jsonBody = System.Text.Json.JsonSerializer.Serialize(requestBody);
+            var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+
+            // URL для Gemini API (используем модель flash для быстроты)
+            string url = $"https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key={apiKey}";
+
+            // Отправляем запрос
+            var response = await httpClient.PostAsync(url, content);
+            string responseBody = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"API ошибка ({response.StatusCode}): {responseBody}");
+            }
+
+            // Парсим ответ
+            using var doc = System.Text.Json.JsonDocument.Parse(responseBody);
+            var root = doc.RootElement;
+
+            // Извлекаем текст ответа
+            if (root.TryGetProperty("candidates", out var candidates) &&
+                candidates.GetArrayLength() > 0 &&
+                candidates[0].TryGetProperty("content", out var content07) &&
+                content07.TryGetProperty("parts", out var parts) &&
+                parts.GetArrayLength() > 0 &&
+                parts[0].TryGetProperty("text", out var text))
+            {
+                return text.GetString();
+            }
+
+            return null;
         }
     }
 }
