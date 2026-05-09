@@ -1,5 +1,4 @@
-﻿//using MySql.Data.MySqlClient;
-using MySqlConnector;
+﻿using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -285,7 +284,7 @@ namespace Menu_14
 
         private void дополнеиередакторСсылкИзИнтеретаToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // начнём с утра приделывать код от Виталия - и понял, что не понимая ни хрена!
+            // пойдём своим путём!!
         }
     }
 }

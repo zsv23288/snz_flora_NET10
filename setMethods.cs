@@ -1,5 +1,4 @@
 ﻿using Google.Protobuf;
-// horn, horn ...
 using Mysqlx.Session;
 using MySqlX.XDevAPI.Common;
 using System;
@@ -10,7 +9,6 @@ using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Windows.Forms;
-// using MySql.Data.MySqlClient;
 using MySqlConnector;
 namespace Menu_14
 {

@@ -151,8 +151,8 @@ namespace Menu_14
             if (e.Index < 0) return;
 
             ListBox? listBox = sender as ListBox;
-            ListBoxItem item = listBox.Items[e.Index] as ListBoxItem;
-           
+            ListBoxItem? item = listBox.Items[e.Index] as ListBoxItem;
+          
             if (item == null) return;
 
             e.DrawBackground();
