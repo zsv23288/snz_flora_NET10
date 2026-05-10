@@ -30,9 +30,9 @@ namespace Menu_14
 
         private void оснвныеДанныеИзBDMySQLToolStripMenuItem_Click(object sender, EventArgs e)   // выбор архива из папки
         {
-        //    MessageBox.Show("Здесь будт Город Сад !!","И солнце встаёт над рекой...");
+            //    MessageBox.Show("Здесь будт Город Сад !!","И солнце встаёт над рекой...");
             setMethods.choiceFile("catExport");  // выбор архива из папки
-        
+
         }
         // для фиксации изменений 26.03
         private void записьПротоколаToolStripMenuItem_Click(object sender, EventArgs e) // тест метода. проверка метода Protocol-a
@@ -75,24 +75,24 @@ namespace Menu_14
                     Console.WriteLine($"Ошибка удаления {file}: {ex.Message}");
                 }
             }
-                //// Удалить все файлы
-                //foreach (string file in Directory.GetFiles(targetDir))
-                //{
-                //    File.Delete(file);
-                //}
+            //// Удалить все файлы
+            //foreach (string file in Directory.GetFiles(targetDir))
+            //{
+            //    File.Delete(file);
+            //}
 
-                //// Удалить все подпапки (рекурсивно)
-                //foreach (string directory in Directory.GetDirectories(targetDir))
-                //{
-                //    Directory.Delete(directory, true);
-                //}
-            }
+            //// Удалить все подпапки (рекурсивно)
+            //foreach (string directory in Directory.GetDirectories(targetDir))
+            //{
+            //    Directory.Delete(directory, true);
+            //}
+        }
 
         private void namelatListToolStripMenuItem_Click(object sender, EventArgs e)  // проверка наличие названия name_lat в базе MySQL
         {
             var ps = setMethods.findName_latPlants("Acer negundo");
-            
-            if (ps.Count > 0 )
+
+            if (ps.Count > 0)
             {
                 DateTime dt = ps[0].time_last;
                 MessageBox.Show(Convert.ToString(ps.Count), "однако...");
@@ -105,7 +105,7 @@ namespace Menu_14
         }
 
         private void вывестиИзMySQLВТаблицуToolStripMenuItem_Click(object sender, EventArgs e) // кнопка в главном подменю. что это будет? 
-        {         }
+        { }
         private void button1_Click(object sender, EventArgs e) // вывод данных из БД в таблицу dataGridView1
         {
             string connectionString = "Server=localhost;Database=snz_flora;Uid=root;Pwd=root;";
@@ -166,7 +166,7 @@ namespace Menu_14
                             OpenInFastStone(Value);
                             break;
                         case 4:
-                            var value1 = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex ].Value;
+                            var value1 = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
                             string listXX = value1?.ToString() ?? "";
                             var value3 = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex - 3].Value;
                             string nameLat = value3?.ToString() ?? "";
@@ -180,7 +180,7 @@ namespace Menu_14
                     }
                 }
             }
-            
+
         }
         private void OpenInFastStone(string latinName) // Метод для открытия изображения в FastStone Image Viewer
         {
@@ -200,7 +200,7 @@ namespace Menu_14
                 // Формируем путь к изображению
                 // Предполагаем, что изображения хранятся в папке Images с названиями {latinName}.jpg
                 string imagePath = parentFolder + latinName;
-                
+
                 // Запускаем FastStone с параметром (путь к изображению)
                 Process.Start(fastStonePath, $"\"{imagePath}\"");
             }
@@ -246,7 +246,7 @@ namespace Menu_14
                     CreateNoWindow = true
                 })?.WaitForExit();
                 FileInfo archiveInfo = new FileInfo(archivePath);
-                setMethods.ProtocolT($"Архив сохранен: {archivePath}", $"Размер архива: {archiveInfo.Length / 1024.0 / 1024.0:F2} MB","Фотографии растений");
+                setMethods.ProtocolT($"Архив сохранен: {archivePath}", $"Размер архива: {archiveInfo.Length / 1024.0 / 1024.0:F2} MB", "Фотографии растений");
                 Console.WriteLine($"Архив создан: {archivePath}");
             }
         }
@@ -286,6 +286,11 @@ namespace Menu_14
         private void дополнеиередакторСсылкИзИнтеретаToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // начнём с утра приделывать код от Виталия
+        }
+
+        private void заменадополнеиеФотографииРастенийToolStripMenuItem_Click(object sender, EventArgs e) // добавим фото в БД из ПК
+        {
+
         }
     }
 }

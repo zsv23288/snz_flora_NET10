@@ -29,296 +29,269 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Menu_14));
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.оснвныеДанныеИзBDMySQLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.вывестиИзMySQLВТаблицуToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ljfdbnmHfcnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.изСмартфонаВБДToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.аннотацияПроРастениеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.дополнеиередакторСсылкИзИнтеретаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.очисткаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.заменадополнеиеФотографииРастенийToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.редактированиеФотографииРастенияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.таблицаРастенийВыгрузкаИзBDВФайлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.таблицаСсылокВыгрузкаИзBDВФайлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.фотографииРастенийВыгрузкаАрхивToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.папкиСФотографиямиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.протоколИзMySQLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.bDРастенийВMySQLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.заToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.историяПроектаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.инструкцияПользователяToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.тестМетодаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.записьПротоколаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.датаИзСтрокиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.числоИзСтрокиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.namelatListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.проверкаНаличияПодкаталогаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.заменаПоляTimelastToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.запускFormLinksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.button1 = new System.Windows.Forms.Button();
-            this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.SuspendLayout();
+            menuStrip1 = new MenuStrip();
+            оснвныеДанныеИзBDMySQLToolStripMenuItem = new ToolStripMenuItem();
+            вывестиИзMySQLВТаблицуToolStripMenuItem = new ToolStripMenuItem();
+            ljfdbnmHfcnToolStripMenuItem = new ToolStripMenuItem();
+            изСмартфонаВБДToolStripMenuItem = new ToolStripMenuItem();
+            аннотацияПроРастениеToolStripMenuItem = new ToolStripMenuItem();
+            дополнеиередакторСсылкИзИнтеретаToolStripMenuItem = new ToolStripMenuItem();
+            очисткаToolStripMenuItem = new ToolStripMenuItem();
+            заменадополнеиеФотографииРастенийToolStripMenuItem = new ToolStripMenuItem();
+            редактированиеФотографииРастенияToolStripMenuItem = new ToolStripMenuItem();
+            таблицаРастенийВыгрузкаИзBDВФайлToolStripMenuItem = new ToolStripMenuItem();
+            таблицаСсылокВыгрузкаИзBDВФайлToolStripMenuItem = new ToolStripMenuItem();
+            фотографииРастенийВыгрузкаАрхивToolStripMenuItem = new ToolStripMenuItem();
+            папкиСФотографиямиToolStripMenuItem = new ToolStripMenuItem();
+            протоколИзMySQLToolStripMenuItem = new ToolStripMenuItem();
+            bDРастенийВMySQLToolStripMenuItem = new ToolStripMenuItem();
+            заToolStripMenuItem = new ToolStripMenuItem();
+            историяПроектаToolStripMenuItem = new ToolStripMenuItem();
+            инструкцияПользователяToolStripMenuItem = new ToolStripMenuItem();
+            тестМетодаToolStripMenuItem = new ToolStripMenuItem();
+            записьПротоколаToolStripMenuItem = new ToolStripMenuItem();
+            датаИзСтрокиToolStripMenuItem = new ToolStripMenuItem();
+            числоИзСтрокиToolStripMenuItem = new ToolStripMenuItem();
+            namelatListToolStripMenuItem = new ToolStripMenuItem();
+            проверкаНаличияПодкаталогаToolStripMenuItem = new ToolStripMenuItem();
+            заменаПоляTimelastToolStripMenuItem = new ToolStripMenuItem();
+            запускFormLinksToolStripMenuItem = new ToolStripMenuItem();
+            dataGridView1 = new DataGridView();
+            button1 = new Button();
+            menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            SuspendLayout();
             // 
             // menuStrip1
             // 
-            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(19, 19);
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.оснвныеДанныеИзBDMySQLToolStripMenuItem,
-            this.ljfdbnmHfcnToolStripMenuItem,
-            this.очисткаToolStripMenuItem,
-            this.заToolStripMenuItem,
-            this.тестМетодаToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1163, 27);
-            this.menuStrip1.TabIndex = 0;
-            this.menuStrip1.Text = "menuStrip1";
+            menuStrip1.ImageScalingSize = new Size(19, 19);
+            menuStrip1.Items.AddRange(new ToolStripItem[] { оснвныеДанныеИзBDMySQLToolStripMenuItem, ljfdbnmHfcnToolStripMenuItem, очисткаToolStripMenuItem, заToolStripMenuItem, тестМетодаToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(1163, 27);
+            menuStrip1.TabIndex = 0;
+            menuStrip1.Text = "menuStrip1";
             // 
             // оснвныеДанныеИзBDMySQLToolStripMenuItem
             // 
-            this.оснвныеДанныеИзBDMySQLToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.вывестиИзMySQLВТаблицуToolStripMenuItem});
-            this.оснвныеДанныеИзBDMySQLToolStripMenuItem.Name = "оснвныеДанныеИзBDMySQLToolStripMenuItem";
-            this.оснвныеДанныеИзBDMySQLToolStripMenuItem.Size = new System.Drawing.Size(225, 23);
-            this.оснвныеДанныеИзBDMySQLToolStripMenuItem.Text = "оснавные данные из BD MySQL";
-            this.оснвныеДанныеИзBDMySQLToolStripMenuItem.Visible = false;
-            this.оснвныеДанныеИзBDMySQLToolStripMenuItem.Click += new System.EventHandler(this.оснвныеДанныеИзBDMySQLToolStripMenuItem_Click);
+            оснвныеДанныеИзBDMySQLToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { вывестиИзMySQLВТаблицуToolStripMenuItem });
+            оснвныеДанныеИзBDMySQLToolStripMenuItem.Name = "оснвныеДанныеИзBDMySQLToolStripMenuItem";
+            оснвныеДанныеИзBDMySQLToolStripMenuItem.Size = new Size(225, 23);
+            оснвныеДанныеИзBDMySQLToolStripMenuItem.Text = "оснавные данные из BD MySQL";
+            оснвныеДанныеИзBDMySQLToolStripMenuItem.Visible = false;
+            оснвныеДанныеИзBDMySQLToolStripMenuItem.Click += оснвныеДанныеИзBDMySQLToolStripMenuItem_Click;
             // 
             // вывестиИзMySQLВТаблицуToolStripMenuItem
             // 
-            this.вывестиИзMySQLВТаблицуToolStripMenuItem.Name = "вывестиИзMySQLВТаблицуToolStripMenuItem";
-            this.вывестиИзMySQLВТаблицуToolStripMenuItem.Size = new System.Drawing.Size(271, 26);
-            this.вывестиИзMySQLВТаблицуToolStripMenuItem.Text = "вывести из MySQL в таблицу";
-            this.вывестиИзMySQLВТаблицуToolStripMenuItem.Click += new System.EventHandler(this.вывестиИзMySQLВТаблицуToolStripMenuItem_Click);
+            вывестиИзMySQLВТаблицуToolStripMenuItem.Name = "вывестиИзMySQLВТаблицуToolStripMenuItem";
+            вывестиИзMySQLВТаблицуToolStripMenuItem.Size = new Size(271, 26);
+            вывестиИзMySQLВТаблицуToolStripMenuItem.Text = "вывести из MySQL в таблицу";
+            вывестиИзMySQLВТаблицуToolStripMenuItem.Click += вывестиИзMySQLВТаблицуToolStripMenuItem_Click;
             // 
             // ljfdbnmHfcnToolStripMenuItem
             // 
-            this.ljfdbnmHfcnToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.изСмартфонаВБДToolStripMenuItem,
-            this.аннотацияПроРастениеToolStripMenuItem,
-            this.дополнеиередакторСсылкИзИнтеретаToolStripMenuItem});
-            this.ljfdbnmHfcnToolStripMenuItem.Name = "ljfdbnmHfcnToolStripMenuItem";
-            this.ljfdbnmHfcnToolStripMenuItem.Size = new System.Drawing.Size(158, 23);
-            this.ljfdbnmHfcnToolStripMenuItem.Text = "добавить растение(я)";
+            ljfdbnmHfcnToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { изСмартфонаВБДToolStripMenuItem, аннотацияПроРастениеToolStripMenuItem, дополнеиередакторСсылкИзИнтеретаToolStripMenuItem });
+            ljfdbnmHfcnToolStripMenuItem.Name = "ljfdbnmHfcnToolStripMenuItem";
+            ljfdbnmHfcnToolStripMenuItem.Size = new Size(158, 23);
+            ljfdbnmHfcnToolStripMenuItem.Text = "добавить растение(я)";
             // 
             // изСмартфонаВБДToolStripMenuItem
             // 
-            this.изСмартфонаВБДToolStripMenuItem.Name = "изСмартфонаВБДToolStripMenuItem";
-            this.изСмартфонаВБДToolStripMenuItem.Size = new System.Drawing.Size(339, 26);
-            this.изСмартфонаВБДToolStripMenuItem.Text = "из Смартфона в БД";
-            this.изСмартфонаВБДToolStripMenuItem.Click += new System.EventHandler(this.изСмартфонаВБДToolStripMenuItem_Click);
+            изСмартфонаВБДToolStripMenuItem.Name = "изСмартфонаВБДToolStripMenuItem";
+            изСмартфонаВБДToolStripMenuItem.Size = new Size(339, 26);
+            изСмартфонаВБДToolStripMenuItem.Text = "из Смартфона в БД";
+            изСмартфонаВБДToolStripMenuItem.Click += изСмартфонаВБДToolStripMenuItem_Click;
             // 
             // аннотацияПроРастениеToolStripMenuItem
             // 
-            this.аннотацияПроРастениеToolStripMenuItem.Name = "аннотацияПроРастениеToolStripMenuItem";
-            this.аннотацияПроРастениеToolStripMenuItem.Size = new System.Drawing.Size(339, 26);
-            this.аннотацияПроРастениеToolStripMenuItem.Text = "аннотация про растение";
+            аннотацияПроРастениеToolStripMenuItem.Name = "аннотацияПроРастениеToolStripMenuItem";
+            аннотацияПроРастениеToolStripMenuItem.Size = new Size(339, 26);
+            аннотацияПроРастениеToolStripMenuItem.Text = "аннотация про растение";
             // 
             // дополнеиередакторСсылкИзИнтеретаToolStripMenuItem
             // 
-            this.дополнеиередакторСсылкИзИнтеретаToolStripMenuItem.Name = "дополнеиередакторСсылкИзИнтеретаToolStripMenuItem";
-            this.дополнеиередакторСсылкИзИнтеретаToolStripMenuItem.Size = new System.Drawing.Size(339, 26);
-            this.дополнеиередакторСсылкИзИнтеретаToolStripMenuItem.Text = "дополнеие/редактор ссылк из интерета";
-            this.дополнеиередакторСсылкИзИнтеретаToolStripMenuItem.Click += new System.EventHandler(this.дополнеиередакторСсылкИзИнтеретаToolStripMenuItem_Click);
+            дополнеиередакторСсылкИзИнтеретаToolStripMenuItem.Name = "дополнеиередакторСсылкИзИнтеретаToolStripMenuItem";
+            дополнеиередакторСсылкИзИнтеретаToolStripMenuItem.Size = new Size(339, 26);
+            дополнеиередакторСсылкИзИнтеретаToolStripMenuItem.Text = "дополнеие/редактор ссылк из интерета";
+            дополнеиередакторСсылкИзИнтеретаToolStripMenuItem.Click += дополнеиередакторСсылкИзИнтеретаToolStripMenuItem_Click;
             // 
             // очисткаToolStripMenuItem
             // 
-            this.очисткаToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.заменадополнеиеФотографииРастенийToolStripMenuItem,
-            this.редактированиеФотографииРастенияToolStripMenuItem,
-            this.таблицаРастенийВыгрузкаИзBDВФайлToolStripMenuItem,
-            this.таблицаСсылокВыгрузкаИзBDВФайлToolStripMenuItem,
-            this.фотографииРастенийВыгрузкаАрхивToolStripMenuItem,
-            this.папкиСФотографиямиToolStripMenuItem,
-            this.протоколИзMySQLToolStripMenuItem,
-            this.bDРастенийВMySQLToolStripMenuItem});
-            this.очисткаToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
-            this.очисткаToolStripMenuItem.Name = "очисткаToolStripMenuItem";
-            this.очисткаToolStripMenuItem.Size = new System.Drawing.Size(76, 23);
-            this.очисткаToolStripMenuItem.Text = "Утилиты";
+            очисткаToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { заменадополнеиеФотографииРастенийToolStripMenuItem, редактированиеФотографииРастенияToolStripMenuItem, таблицаРастенийВыгрузкаИзBDВФайлToolStripMenuItem, таблицаСсылокВыгрузкаИзBDВФайлToolStripMenuItem, фотографииРастенийВыгрузкаАрхивToolStripMenuItem, папкиСФотографиямиToolStripMenuItem, протоколИзMySQLToolStripMenuItem, bDРастенийВMySQLToolStripMenuItem });
+            очисткаToolStripMenuItem.ForeColor = Color.Black;
+            очисткаToolStripMenuItem.Name = "очисткаToolStripMenuItem";
+            очисткаToolStripMenuItem.Size = new Size(76, 23);
+            очисткаToolStripMenuItem.Text = "Утилиты";
             // 
             // заменадополнеиеФотографииРастенийToolStripMenuItem
             // 
-            this.заменадополнеиеФотографииРастенийToolStripMenuItem.Name = "заменадополнеиеФотографииРастенийToolStripMenuItem";
-            this.заменадополнеиеФотографииРастенийToolStripMenuItem.Size = new System.Drawing.Size(351, 26);
-            this.заменадополнеиеФотографииРастенийToolStripMenuItem.Text = "замена/дополнеие фотографии растений";
+            заменадополнеиеФотографииРастенийToolStripMenuItem.Name = "заменадополнеиеФотографииРастенийToolStripMenuItem";
+            заменадополнеиеФотографииРастенийToolStripMenuItem.Size = new Size(351, 26);
+            заменадополнеиеФотографииРастенийToolStripMenuItem.Text = "замена/дополнеие фото растений из ПК";
+            заменадополнеиеФотографииРастенийToolStripMenuItem.Click += заменадополнеиеФотографииРастенийToolStripMenuItem_Click;
             // 
             // редактированиеФотографииРастенияToolStripMenuItem
             // 
-            this.редактированиеФотографииРастенияToolStripMenuItem.Name = "редактированиеФотографииРастенияToolStripMenuItem";
-            this.редактированиеФотографииРастенияToolStripMenuItem.Size = new System.Drawing.Size(351, 26);
-            this.редактированиеФотографииРастенияToolStripMenuItem.Text = "редактирование фотографии растения";
+            редактированиеФотографииРастенияToolStripMenuItem.Name = "редактированиеФотографииРастенияToolStripMenuItem";
+            редактированиеФотографииРастенияToolStripMenuItem.Size = new Size(351, 26);
+            редактированиеФотографииРастенияToolStripMenuItem.Text = "редактирование фотографии растения";
             // 
             // таблицаРастенийВыгрузкаИзBDВФайлToolStripMenuItem
             // 
-            this.таблицаРастенийВыгрузкаИзBDВФайлToolStripMenuItem.Name = "таблицаРастенийВыгрузкаИзBDВФайлToolStripMenuItem";
-            this.таблицаРастенийВыгрузкаИзBDВФайлToolStripMenuItem.Size = new System.Drawing.Size(351, 26);
-            this.таблицаРастенийВыгрузкаИзBDВФайлToolStripMenuItem.Text = "таблица Растений, выгрузка из BD в файл";
+            таблицаРастенийВыгрузкаИзBDВФайлToolStripMenuItem.Name = "таблицаРастенийВыгрузкаИзBDВФайлToolStripMenuItem";
+            таблицаРастенийВыгрузкаИзBDВФайлToolStripMenuItem.Size = new Size(351, 26);
+            таблицаРастенийВыгрузкаИзBDВФайлToolStripMenuItem.Text = "таблица Растений, выгрузка из BD в файл";
             // 
             // таблицаСсылокВыгрузкаИзBDВФайлToolStripMenuItem
             // 
-            this.таблицаСсылокВыгрузкаИзBDВФайлToolStripMenuItem.Name = "таблицаСсылокВыгрузкаИзBDВФайлToolStripMenuItem";
-            this.таблицаСсылокВыгрузкаИзBDВФайлToolStripMenuItem.Size = new System.Drawing.Size(351, 26);
-            this.таблицаСсылокВыгрузкаИзBDВФайлToolStripMenuItem.Text = "таблица Ссылок, выгрузка из BD в файл";
-            this.таблицаСсылокВыгрузкаИзBDВФайлToolStripMenuItem.Click += new System.EventHandler(this.таблицаСсылокВыгрузкаИзBDВФайлToolStripMenuItem_Click);
+            таблицаСсылокВыгрузкаИзBDВФайлToolStripMenuItem.Name = "таблицаСсылокВыгрузкаИзBDВФайлToolStripMenuItem";
+            таблицаСсылокВыгрузкаИзBDВФайлToolStripMenuItem.Size = new Size(351, 26);
+            таблицаСсылокВыгрузкаИзBDВФайлToolStripMenuItem.Text = "таблица Ссылок, выгрузка из BD в файл";
+            таблицаСсылокВыгрузкаИзBDВФайлToolStripMenuItem.Click += таблицаСсылокВыгрузкаИзBDВФайлToolStripMenuItem_Click;
             // 
             // фотографииРастенийВыгрузкаАрхивToolStripMenuItem
             // 
-            this.фотографииРастенийВыгрузкаАрхивToolStripMenuItem.Name = "фотографииРастенийВыгрузкаАрхивToolStripMenuItem";
-            this.фотографииРастенийВыгрузкаАрхивToolStripMenuItem.Size = new System.Drawing.Size(351, 26);
-            this.фотографииРастенийВыгрузкаАрхивToolStripMenuItem.Text = "фотографии Растений, выгрузка архив";
-            this.фотографииРастенийВыгрузкаАрхивToolStripMenuItem.Click += new System.EventHandler(this.фотографииРастенийВыгрузкаАрхивToolStripMenuItem_Click);
+            фотографииРастенийВыгрузкаАрхивToolStripMenuItem.Name = "фотографииРастенийВыгрузкаАрхивToolStripMenuItem";
+            фотографииРастенийВыгрузкаАрхивToolStripMenuItem.Size = new Size(351, 26);
+            фотографииРастенийВыгрузкаАрхивToolStripMenuItem.Text = "фотографии Растений, выгрузка архив";
+            фотографииРастенийВыгрузкаАрхивToolStripMenuItem.Click += фотографииРастенийВыгрузкаАрхивToolStripMenuItem_Click;
             // 
             // папкиСФотографиямиToolStripMenuItem
             // 
-            this.папкиСФотографиямиToolStripMenuItem.ForeColor = System.Drawing.Color.Red;
-            this.папкиСФотографиямиToolStripMenuItem.Name = "папкиСФотографиямиToolStripMenuItem";
-            this.папкиСФотографиямиToolStripMenuItem.Size = new System.Drawing.Size(351, 26);
-            this.папкиСФотографиямиToolStripMenuItem.Text = "очистка, папки с фотографиями";
-            this.папкиСФотографиямиToolStripMenuItem.Click += new System.EventHandler(this.папкиСФотографиямиToolStripMenuItem_Click);
+            папкиСФотографиямиToolStripMenuItem.ForeColor = Color.Red;
+            папкиСФотографиямиToolStripMenuItem.Name = "папкиСФотографиямиToolStripMenuItem";
+            папкиСФотографиямиToolStripMenuItem.Size = new Size(351, 26);
+            папкиСФотографиямиToolStripMenuItem.Text = "очистка, папки с фотографиями";
+            папкиСФотографиямиToolStripMenuItem.Click += папкиСФотографиямиToolStripMenuItem_Click;
             // 
             // протоколИзMySQLToolStripMenuItem
             // 
-            this.протоколИзMySQLToolStripMenuItem.ForeColor = System.Drawing.Color.Red;
-            this.протоколИзMySQLToolStripMenuItem.Name = "протоколИзMySQLToolStripMenuItem";
-            this.протоколИзMySQLToolStripMenuItem.Size = new System.Drawing.Size(351, 26);
-            this.протоколИзMySQLToolStripMenuItem.Text = "очистка, протокол из MySQL";
-            this.протоколИзMySQLToolStripMenuItem.Click += new System.EventHandler(this.протоколИзMySQLToolStripMenuItem_Click);
+            протоколИзMySQLToolStripMenuItem.ForeColor = Color.Red;
+            протоколИзMySQLToolStripMenuItem.Name = "протоколИзMySQLToolStripMenuItem";
+            протоколИзMySQLToolStripMenuItem.Size = new Size(351, 26);
+            протоколИзMySQLToolStripMenuItem.Text = "очистка, протокол из MySQL";
+            протоколИзMySQLToolStripMenuItem.Click += протоколИзMySQLToolStripMenuItem_Click;
             // 
             // bDРастенийВMySQLToolStripMenuItem
             // 
-            this.bDРастенийВMySQLToolStripMenuItem.ForeColor = System.Drawing.Color.Red;
-            this.bDРастенийВMySQLToolStripMenuItem.Name = "bDРастенийВMySQLToolStripMenuItem";
-            this.bDРастенийВMySQLToolStripMenuItem.Size = new System.Drawing.Size(351, 26);
-            this.bDРастенийВMySQLToolStripMenuItem.Text = "очистка, BD растений в MySQL";
-            this.bDРастенийВMySQLToolStripMenuItem.Click += new System.EventHandler(this.bDПастенийВMySQLToolStripMenuItem_Click);
+            bDРастенийВMySQLToolStripMenuItem.ForeColor = Color.Red;
+            bDРастенийВMySQLToolStripMenuItem.Name = "bDРастенийВMySQLToolStripMenuItem";
+            bDРастенийВMySQLToolStripMenuItem.Size = new Size(351, 26);
+            bDРастенийВMySQLToolStripMenuItem.Text = "очистка, BD растений в MySQL";
+            bDРастенийВMySQLToolStripMenuItem.Click += bDПастенийВMySQLToolStripMenuItem_Click;
             // 
             // заToolStripMenuItem
             // 
-            this.заToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.историяПроектаToolStripMenuItem,
-            this.инструкцияПользователяToolStripMenuItem});
-            this.заToolStripMenuItem.Name = "заToolStripMenuItem";
-            this.заToolStripMenuItem.Size = new System.Drawing.Size(185, 23);
-            this.заToolStripMenuItem.Text = "записки и всё про проект";
+            заToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { историяПроектаToolStripMenuItem, инструкцияПользователяToolStripMenuItem });
+            заToolStripMenuItem.Name = "заToolStripMenuItem";
+            заToolStripMenuItem.Size = new Size(185, 23);
+            заToolStripMenuItem.Text = "записки и всё про проект";
             // 
             // историяПроектаToolStripMenuItem
             // 
-            this.историяПроектаToolStripMenuItem.Name = "историяПроектаToolStripMenuItem";
-            this.историяПроектаToolStripMenuItem.Size = new System.Drawing.Size(251, 26);
-            this.историяПроектаToolStripMenuItem.Text = "История проекта";
+            историяПроектаToolStripMenuItem.Name = "историяПроектаToolStripMenuItem";
+            историяПроектаToolStripMenuItem.Size = new Size(251, 26);
+            историяПроектаToolStripMenuItem.Text = "История проекта";
             // 
             // инструкцияПользователяToolStripMenuItem
             // 
-            this.инструкцияПользователяToolStripMenuItem.Name = "инструкцияПользователяToolStripMenuItem";
-            this.инструкцияПользователяToolStripMenuItem.Size = new System.Drawing.Size(251, 26);
-            this.инструкцияПользователяToolStripMenuItem.Text = "Инструкция пользователя";
-            this.инструкцияПользователяToolStripMenuItem.Click += new System.EventHandler(this.инструкцияПользователяToolStripMenuItem_Click);
+            инструкцияПользователяToolStripMenuItem.Name = "инструкцияПользователяToolStripMenuItem";
+            инструкцияПользователяToolStripMenuItem.Size = new Size(251, 26);
+            инструкцияПользователяToolStripMenuItem.Text = "Инструкция пользователя";
+            инструкцияПользователяToolStripMenuItem.Click += инструкцияПользователяToolStripMenuItem_Click;
             // 
             // тестМетодаToolStripMenuItem
             // 
-            this.тестМетодаToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.записьПротоколаToolStripMenuItem,
-            this.датаИзСтрокиToolStripMenuItem,
-            this.числоИзСтрокиToolStripMenuItem,
-            this.namelatListToolStripMenuItem,
-            this.проверкаНаличияПодкаталогаToolStripMenuItem,
-            this.заменаПоляTimelastToolStripMenuItem,
-            this.запускFormLinksToolStripMenuItem});
-            this.тестМетодаToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.тестМетодаToolStripMenuItem.ForeColor = System.Drawing.Color.SaddleBrown;
-            this.тестМетодаToolStripMenuItem.Name = "тестМетодаToolStripMenuItem";
-            this.тестМетодаToolStripMenuItem.Size = new System.Drawing.Size(98, 23);
-            this.тестМетодаToolStripMenuItem.Text = "тест метода";
-            this.тестМетодаToolStripMenuItem.Visible = false;
+            тестМетодаToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { записьПротоколаToolStripMenuItem, датаИзСтрокиToolStripMenuItem, числоИзСтрокиToolStripMenuItem, namelatListToolStripMenuItem, проверкаНаличияПодкаталогаToolStripMenuItem, заменаПоляTimelastToolStripMenuItem, запускFormLinksToolStripMenuItem });
+            тестМетодаToolStripMenuItem.Font = new Font("Segoe UI", 9F);
+            тестМетодаToolStripMenuItem.ForeColor = Color.SaddleBrown;
+            тестМетодаToolStripMenuItem.Name = "тестМетодаToolStripMenuItem";
+            тестМетодаToolStripMenuItem.Size = new Size(98, 23);
+            тестМетодаToolStripMenuItem.Text = "тест метода";
+            тестМетодаToolStripMenuItem.Visible = false;
             // 
             // записьПротоколаToolStripMenuItem
             // 
-            this.записьПротоколаToolStripMenuItem.Name = "записьПротоколаToolStripMenuItem";
-            this.записьПротоколаToolStripMenuItem.Size = new System.Drawing.Size(286, 26);
-            this.записьПротоколаToolStripMenuItem.Text = "запись в протокол";
-            this.записьПротоколаToolStripMenuItem.Click += new System.EventHandler(this.записьПротоколаToolStripMenuItem_Click);
+            записьПротоколаToolStripMenuItem.Name = "записьПротоколаToolStripMenuItem";
+            записьПротоколаToolStripMenuItem.Size = new Size(286, 26);
+            записьПротоколаToolStripMenuItem.Text = "запись в протокол";
+            записьПротоколаToolStripMenuItem.Click += записьПротоколаToolStripMenuItem_Click;
             // 
             // датаИзСтрокиToolStripMenuItem
             // 
-            this.датаИзСтрокиToolStripMenuItem.Name = "датаИзСтрокиToolStripMenuItem";
-            this.датаИзСтрокиToolStripMenuItem.Size = new System.Drawing.Size(286, 26);
-            this.датаИзСтрокиToolStripMenuItem.Text = "дата из строки";
+            датаИзСтрокиToolStripMenuItem.Name = "датаИзСтрокиToolStripMenuItem";
+            датаИзСтрокиToolStripMenuItem.Size = new Size(286, 26);
+            датаИзСтрокиToolStripMenuItem.Text = "дата из строки";
             // 
             // числоИзСтрокиToolStripMenuItem
             // 
-            this.числоИзСтрокиToolStripMenuItem.Name = "числоИзСтрокиToolStripMenuItem";
-            this.числоИзСтрокиToolStripMenuItem.Size = new System.Drawing.Size(286, 26);
-            this.числоИзСтрокиToolStripMenuItem.Text = "число из строки";
+            числоИзСтрокиToolStripMenuItem.Name = "числоИзСтрокиToolStripMenuItem";
+            числоИзСтрокиToolStripMenuItem.Size = new Size(286, 26);
+            числоИзСтрокиToolStripMenuItem.Text = "число из строки";
             // 
             // namelatListToolStripMenuItem
             // 
-            this.namelatListToolStripMenuItem.Name = "namelatListToolStripMenuItem";
-            this.namelatListToolStripMenuItem.Size = new System.Drawing.Size(286, 26);
-            this.namelatListToolStripMenuItem.Text = "name_lat List";
-            this.namelatListToolStripMenuItem.Click += new System.EventHandler(this.namelatListToolStripMenuItem_Click);
+            namelatListToolStripMenuItem.Name = "namelatListToolStripMenuItem";
+            namelatListToolStripMenuItem.Size = new Size(286, 26);
+            namelatListToolStripMenuItem.Text = "name_lat List";
+            namelatListToolStripMenuItem.Click += namelatListToolStripMenuItem_Click;
             // 
             // проверкаНаличияПодкаталогаToolStripMenuItem
             // 
-            this.проверкаНаличияПодкаталогаToolStripMenuItem.Name = "проверкаНаличияПодкаталогаToolStripMenuItem";
-            this.проверкаНаличияПодкаталогаToolStripMenuItem.Size = new System.Drawing.Size(286, 26);
-            this.проверкаНаличияПодкаталогаToolStripMenuItem.Text = "проверка наличия подкаталога";
-            this.проверкаНаличияПодкаталогаToolStripMenuItem.Click += new System.EventHandler(this.проверкаНаличияПодкаталогаToolStripMenuItem_Click);
+            проверкаНаличияПодкаталогаToolStripMenuItem.Name = "проверкаНаличияПодкаталогаToolStripMenuItem";
+            проверкаНаличияПодкаталогаToolStripMenuItem.Size = new Size(286, 26);
+            проверкаНаличияПодкаталогаToolStripMenuItem.Text = "проверка наличия подкаталога";
+            проверкаНаличияПодкаталогаToolStripMenuItem.Click += проверкаНаличияПодкаталогаToolStripMenuItem_Click;
             // 
             // заменаПоляTimelastToolStripMenuItem
             // 
-            this.заменаПоляTimelastToolStripMenuItem.Name = "заменаПоляTimelastToolStripMenuItem";
-            this.заменаПоляTimelastToolStripMenuItem.Size = new System.Drawing.Size(286, 26);
+            заменаПоляTimelastToolStripMenuItem.Name = "заменаПоляTimelastToolStripMenuItem";
+            заменаПоляTimelastToolStripMenuItem.Size = new Size(286, 26);
             // 
             // запускFormLinksToolStripMenuItem
             // 
-            this.запускFormLinksToolStripMenuItem.Name = "запускFormLinksToolStripMenuItem";
-            this.запускFormLinksToolStripMenuItem.Size = new System.Drawing.Size(286, 26);
+            запускFormLinksToolStripMenuItem.Name = "запускFormLinksToolStripMenuItem";
+            запускFormLinksToolStripMenuItem.Size = new Size(286, 26);
             // 
             // dataGridView1
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(29, 55);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersWidth = 48;
-            this.dataGridView1.Size = new System.Drawing.Size(1103, 901);
-            this.dataGridView1.TabIndex = 1;
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Location = new Point(29, 55);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.RowHeadersWidth = 48;
+            dataGridView1.Size = new Size(1103, 901);
+            dataGridView1.TabIndex = 1;
             // 
             // button1
             // 
-            this.button1.ForeColor = System.Drawing.Color.DarkSlateGray;
-            this.button1.Location = new System.Drawing.Point(908, 7);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(184, 42);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "перегрузка таблицы";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            button1.ForeColor = Color.DarkSlateGray;
+            button1.Location = new Point(908, 7);
+            button1.Name = "button1";
+            button1.Size = new Size(184, 42);
+            button1.TabIndex = 2;
+            button1.Text = "перегрузка таблицы";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // Menu_14
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 17F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1163, 990);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.menuStrip1);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(254)));
-            this.ForeColor = System.Drawing.Color.Olive;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "Menu_14";
-            this.Text = "Победа над разумом!";
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new SizeF(9F, 17F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1163, 990);
+            Controls.Add(button1);
+            Controls.Add(dataGridView1);
+            Controls.Add(menuStrip1);
+            Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold, GraphicsUnit.Point, 254);
+            ForeColor = Color.Olive;
+            MainMenuStrip = menuStrip1;
+            Margin = new Padding(4);
+            Name = "Menu_14";
+            Text = "Победа над разумом!";
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 
