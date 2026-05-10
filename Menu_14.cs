@@ -285,7 +285,7 @@ namespace Menu_14
 
         private void дополнеиередакторСсылкИзИнтеретаToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // начнём с утра приделывать код от Виталия
+            // начнём с ключём от DeepSeek   sk-8cf4e94d86374db48b0994dfa5a2cf8d
         }
     }
 }
