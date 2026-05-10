@@ -12,6 +12,7 @@ using System.IO.Compression;
 // using System.IO.Compression.FileSystem;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -283,9 +284,145 @@ namespace Menu_14
             }
         }
 
-        private void дополнеиередакторСсылкИзИнтеретаToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void дополнеиередакторСсылкИзИнтеретаToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // начнём с ключём от DeepSeek   sk-8cf4e94d86374db48b0994dfa5a2cf8d
+            var menuItem = sender as ToolStripMenuItem;
+            if (menuItem != null) menuItem.Enabled = false;
+
+            try
+            {
+                string inputFilePath = "D:\\ALLZSV\\myHomeland\\floraZSV\\DeepSeek\\query\\2026.05.09-06.05.17.txt";
+                string outputFilePath = "D:\\ALLZSV\\myHomeland\\floraZSV\\DeepSeek\\result\\result.txt";
+
+                // 1. Проверяем и читаем файл с запросом
+                if (!File.Exists(inputFilePath))
+                {
+                    MessageBox.Show($"Файл запроса не найден: {inputFilePath}",
+                                  "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                string userPrompt = File.ReadAllText(inputFilePath, Encoding.UTF8);
+
+                if (string.IsNullOrWhiteSpace(userPrompt))
+                {
+                    MessageBox.Show("Файл запроса пуст!", "Ошибка",
+                                  MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                MessageBox.Show($"Запрос прочитан ({userPrompt.Length} символов).\nОтправляю в DeepSeek AI...",
+                               "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // 2. Получаем API-ключ (из переменной окружения)
+                //    Убедитесь, что переменная GOOGLE_API_KEY содержит ваш ключ sk-...
+                string? apiKey = Environment.GetEnvironmentVariable("GOOGLE_API_KEY");
+
+                if (string.IsNullOrEmpty(apiKey))
+                {
+                    MessageBox.Show("API ключ DeepSeek не найден!\n" +
+                                  "Установите переменную окружения GOOGLE_API_KEY\n" +
+                                  "Или вставьте ключ в код: return \"sk-...\"",
+                                  "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // 3. Отправляем запрос в DeepSeek API
+                string? aiResponse = await CallDeepSeekApiAsync(userPrompt, apiKey);
+
+                // 4. Сохраняем результат
+                File.WriteAllText(outputFilePath, aiResponse ?? "Ответ не получен", Encoding.UTF8);
+
+                MessageBox.Show($"Результат сохранен в файл: {outputFilePath}\n" +
+                               $"Длина ответа: {(aiResponse?.Length ?? 0)} символов",
+                               "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}",
+                               "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                if (menuItem != null) menuItem.Enabled = true;
+            }
+        }
+            /// <param name="prompt">Текст запроса</param>
+/// <param name="apiKey">API ключ DeepSeek (начинается с sk-)</param>
+/// <returns>Ответ от DeepSeek или null в случае ошибки</returns>
+private async Task<string?> CallDeepSeekApiAsync(string prompt, string apiKey)
+        {
+            using var httpClient = new HttpClient();
+
+            // Устанавливаем таймаут
+            httpClient.Timeout = TimeSpan.FromSeconds(60);
+
+            // Добавляем заголовок авторизации [citation:3][citation:4]
+            httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
+
+            // Формируем тело запроса согласно документации DeepSeek API [citation:1][citation:10]
+            var requestBody = new
+            {
+                model = "deepseek-chat",  // Используем основную модель DeepSeek
+                messages = new[]
+                {
+            new
+            {
+                role = "user",
+                content = prompt
+            }
+        },
+                max_tokens = 2048,      // Максимальная длина ответа
+                temperature = 0.7,      // Уровень креативности (0.0 - 1.0)
+                stream = false
+            };
+
+            string jsonBody = JsonSerializer.Serialize(requestBody);
+            var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+
+            // URL для Chat Completions API [citation:2][citation:4]
+            string url = "https://api.deepseek.com/v1/chat/completions";
+
+            try
+            {
+                // Отправляем POST запрос
+                var response = await httpClient.PostAsync(url, content);
+                string responseBody = await response.Content.ReadAsStringAsync();
+
+                // Проверяем успешность запроса
+                if (!response.IsSuccessStatusCode)
+                {
+                    string errorMsg = response.StatusCode == System.Net.HttpStatusCode.Unauthorized
+                        ? "Неверный API ключ. Проверьте правильность ключа DeepSeek."
+                        : $"API ошибка ({response.StatusCode}): {responseBody}";
+                    throw new Exception(errorMsg);
+                }
+
+                // Парсим JSON ответ
+                using var doc = JsonDocument.Parse(responseBody);
+                var root = doc.RootElement;
+
+                // Извлекаем текст ответа по пути: choices[0].message.content [citation:4]
+                if (root.TryGetProperty("choices", out var choices) &&
+                    choices.GetArrayLength() > 0 &&
+                    choices[0].TryGetProperty("message", out var message) &&
+                    message.TryGetProperty("content", out var contentElement))
+                {
+                    return contentElement.GetString();
+                }
+
+                return null;
+            }
+            catch (TaskCanceledException)
+            {
+                throw new Exception("Превышено время ожидания ответа от DeepSeek API.");
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception($"Ошибка сети при обращении к DeepSeek API: {ex.Message}");
+            }
+
         }
     }
 }
