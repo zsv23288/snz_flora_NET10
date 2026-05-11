@@ -356,13 +356,18 @@ namespace Menu_14
                             if (reader.Read()) // Совпадение найдено
                             {
                                 int plantId = reader.GetInt32("id");
+                         //       string plant_name_lat = reader.GetString("name_lat");
+                                string? plant_name_lat = reader.IsDBNull(reader.GetOrdinal("name_lat"))
+    ? null
+    : reader.GetString("name_lat");
                                 DateTime? existingTimeLast = reader.IsDBNull(reader.GetOrdinal("time_last"))
                                     ? (DateTime?)null
                                     : reader.GetDateTime("time_last");
                                 reader.Close();
 
                                 // Составляем путь подкаталога
-                                string targetDirectory = Path.Combine(baseDirectory, fileName);
+                                //  string targetDirectory = Path.Combine(baseDirectory, fileName);
+                                string targetDirectory = Path.Combine(baseDirectory, plant_name_lat ?? "");
                                 if (!Directory.Exists(targetDirectory))
                                 {
                                     Directory.CreateDirectory(targetDirectory);
