@@ -290,7 +290,162 @@ namespace Menu_14
 
         private void заменадополнеиеФотографииРастенийToolStripMenuItem_Click(object sender, EventArgs e) // добавим фото в БД из ПК
         {
+           
+            try
+            {
+                // 1) Открываем диалог выбора нескольких файлов
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Multiselect = true;
+                openFileDialog.Title = "Выберите файлы фотографий растений";
+                openFileDialog.Filter = "Изображения|*.jpg;*.jpeg;*.png;*.bmp;*.gif|Все файлы|*.*";
 
+                if (openFileDialog.ShowDialog() != DialogResult.OK)
+                    return;
+
+                // 2) Создаем массив из выбранных файлов
+                var filesData = new List<string[]>();
+
+                foreach (string filePath in openFileDialog.FileNames)
+                {
+                    FileInfo fileInfo = new FileInfo(filePath);
+
+                    string[] fileRecord = new string[5];
+                    fileRecord[0] = Path.GetFileNameWithoutExtension(filePath); // Название файла (без расширения)
+                    fileRecord[1] = filePath;                                     // Полный путь файла
+                    fileRecord[2] = fileInfo.Length.ToString();                   // Размер файла в байтах
+                    fileRecord[3] = fileInfo.CreationTime.ToString("yyyy-MM-dd HH:mm:ss"); // Дата создания
+                    fileRecord[4] = "не обработано";                              // Для указаний
+
+                    filesData.Add(fileRecord);
+                }
+
+                // Получаем базовый каталог из App.config
+                string baseDirectory = ConfigurationManager.AppSettings["catSubCutFotos"];
+                if (!Directory.Exists(baseDirectory))
+                {
+                    Directory.CreateDirectory(baseDirectory);
+                }
+
+                // Строка подключения к БД (должна быть в App.config)
+                string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+
+                // 3) Обрабатываем каждый файл
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    foreach (var fileRecord in filesData)
+                    {
+                        string fileName = fileRecord[0];
+                        string fullPath = fileRecord[1];
+                        string fileSize = fileRecord[2];
+                        string creationDate = fileRecord[3];
+
+                        // Ищем совпадение в таблице plants по полю name_ru
+                        string selectQuery = "SELECT id, time_last FROM plants WHERE name_ru = @name_ru";
+                        MySqlCommand selectCmd = new MySqlCommand(selectQuery, connection);
+                        selectCmd.Parameters.AddWithValue("@name_ru", fileName);
+
+                        using (MySqlDataReader reader = selectCmd.ExecuteReader())
+                        {
+                            if (reader.Read()) // Совпадение найдено
+                            {
+                                int plantId = reader.GetInt32("id");
+                                DateTime? existingTimeLast = reader.IsDBNull(reader.GetOrdinal("time_last"))
+                                    ? (DateTime?)null
+                                    : reader.GetDateTime("time_last");
+                                reader.Close();
+
+                                // Составляем путь подкаталога
+                                string targetDirectory = Path.Combine(baseDirectory, fileName);
+                                if (!Directory.Exists(targetDirectory))
+                                {
+                                    Directory.CreateDirectory(targetDirectory);
+                                }
+
+                                string targetFilePath = Path.Combine(targetDirectory, Path.GetFileName(fullPath));
+                                DateTime currentFileCreationDate = DateTime.Parse(creationDate);
+
+                                // Проверяем дату создания файла
+                                bool shouldCopy = false;
+
+                                if (existingTimeLast.HasValue)
+                                {
+                                    // Если дата создания файла новее, чем в БД
+                                    if (currentFileCreationDate > existingTimeLast.Value)
+                                    {
+                                        shouldCopy = true;
+                                    }
+                                }
+                                else
+                                {
+                                    // Если в БД нет даты, копируем
+                                    shouldCopy = true;
+                                }
+
+                                if (shouldCopy)
+                                {
+                                    // Копируем файл
+                                    File.Copy(fullPath, targetFilePath, true);
+                                    fileRecord[4] = "скопирован";
+
+                                    // Обновляем поле time_last в таблице plants
+                                    string updateQuery = "UPDATE plants SET time_last = @time_last WHERE id = @id";
+                                    MySqlCommand updateCmd = new MySqlCommand(updateQuery, connection);
+                                    updateCmd.Parameters.AddWithValue("@time_last", currentFileCreationDate);
+                                    updateCmd.Parameters.AddWithValue("@id", plantId);
+                                    updateCmd.ExecuteNonQuery();
+                                }
+                                else
+                                {
+                                    fileRecord[4] = "пропущен (файл не новее существующего)";
+                                }
+                            }
+                            else
+                            {
+                                reader.Close();
+                                fileRecord[4] = "пропущен (нет совпадения в БД)";
+                            }
+                        }
+                    }
+                }
+
+                // 4) Записываем результаты в файл
+                string logFilePath = @"D:\ALLZSV\myHomeland\floraZSV\addFotos.txt";
+                string? logDirectory = Path.GetDirectoryName(logFilePath);
+                if (!Directory.Exists(logDirectory))
+                {
+                    Directory.CreateDirectory(logDirectory);
+                }
+
+                using (StreamWriter writer = new StreamWriter(logFilePath, false, Encoding.UTF8))
+                {
+                    // Заголовок
+                    writer.WriteLine($"Отчет о добавлении фотографий: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+                    writer.WriteLine(new string('-', 100));
+                    writer.WriteLine($"{"Название файла",-30} {"Размер",-15} {"Дата создания",-20} {"Статус",-30}");
+                    writer.WriteLine(new string('-', 100));
+
+                    // Данные
+                    foreach (var fileRecord in filesData)
+                    {
+                        writer.WriteLine($"{fileRecord[0],-30} {fileRecord[2],-15} {fileRecord[3],-20} {fileRecord[4],-30}");
+                    }
+
+                    writer.WriteLine(new string('-', 100));
+                    writer.WriteLine($"Всего обработано файлов: {filesData.Count}");
+                    writer.WriteLine($"Скопировано: {filesData.Count(f => f[4] == "скопирован")}");
+                    writer.WriteLine($"Пропущено: {filesData.Count(f => f[4] != "скопирован")}");
+                }
+
+                MessageBox.Show($"Обработка завершена!\nСкопировано файлов: {filesData.Count(f => f[4] == "скопирован")}\nРезультат сохранен в:\n{logFilePath}",
+                                "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}\n\n{ex.StackTrace}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
+    
 }
