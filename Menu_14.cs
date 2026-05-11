@@ -320,7 +320,12 @@ namespace Menu_14
                 }
 
                 // Получаем базовый каталог из App.config
-                string baseDirectory = ConfigurationManager.AppSettings["catSubCutFotos"];
+                string? baseDirectory = ConfigurationManager.AppSettings["catSubCutFotos"];
+                // Проверяем, что значение не null и не пустое
+                if (string.IsNullOrEmpty(baseDirectory))
+                {
+                    throw new InvalidOperationException("Ключ 'catSubCutFotos' не найден или пуст в App.config");
+                }
                 if (!Directory.Exists(baseDirectory))
                 {
                     Directory.CreateDirectory(baseDirectory);
@@ -413,7 +418,8 @@ namespace Menu_14
                 // 4) Записываем результаты в файл
                 string logFilePath = @"D:\ALLZSV\myHomeland\floraZSV\addFotos.txt";
                 string? logDirectory = Path.GetDirectoryName(logFilePath);
-                if (!Directory.Exists(logDirectory))
+                if (!string.IsNullOrEmpty(logDirectory) && !Directory.Exists(logDirectory))
+                //         if (!Directory.Exists(logDirectory))
                 {
                     Directory.CreateDirectory(logDirectory);
                 }
