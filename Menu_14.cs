@@ -7,6 +7,7 @@ using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 // using System.IO.Compression.FileSystem;
@@ -290,168 +291,174 @@ namespace Menu_14
 
         private void заменадополнеиеФотографииРастенийToolStripMenuItem_Click(object sender, EventArgs e) // добавим фото в БД из ПК
         {
-            // 1) Открываем диалог выбора нескольких файлов
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            // сегодня 14.05.26 попробуем ещё раз
+            // 1) Выбор файлов в указанном каталоге
+            string catSubCutFotos = ConfigurationManager.AppSettings["catSubCutFotos"];
+
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.InitialDirectory = catSubCutFotos;
+            openFileDialog.Multiselect = true;
+            openFileDialog.Title = "Выберите файлы фотографий растений";
+            openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif|All Files|*.*";
+
+            if (openFileDialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            // 2) Создание массива AddFotos
+            List<string[]> AddFotos = new List<string[]>();
+
+            foreach (string filePath in openFileDialog.FileNames)
             {
-                openFileDialog.Multiselect = true;
-                openFileDialog.Title = "Выберите файлы фотографий растений";
-                openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif|All Files|*.*";
+                FileInfo fileInfo = new FileInfo(filePath);
+                string fileName = Path.GetFileName(filePath);
+                DateTime creationDate = fileInfo.CreationTime;
 
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                string[] fotoRecord = new string[5];
+                fotoRecord[0] = fileName;           // Название файла
+                fotoRecord[1] = filePath;            // Полный путь файла
+                fotoRecord[2] = fileInfo.Length.ToString(); // Размер файла
+                fotoRecord[3] = creationDate.ToString("yyyy-MM-dd HH:mm:ss"); // Дата создания
+                fotoRecord[4] = "не обработано";     // Для указаний
+
+                AddFotos.Add(fotoRecord);
+            }
+
+            // Строка подключения к БД
+            string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
+            string catSubCutFotosPath = ConfigurationManager.AppSettings["catSubCutFotos"];
+
+            // 3) Цикл обработки
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+
+                foreach (string[] foto in AddFotos)
                 {
-                    // 2) Создаем массив AddFotos из выбранных файлов
-                    List<(string fileName, string fullPath, long fileSize, DateTime creationDate, string status)> AddFotos =
-                        new List<(string, string, long, DateTime, string)>();
+                    string fileName = foto[0];
+                    string filePath = foto[1];
+                    string creationDateStr = foto[3];
+                    DateTime fotoFromArray = DateTime.Parse(creationDateStr);
 
-                    foreach (string filePath in openFileDialog.FileNames)
+                    // Поиск совпадения в таблице plants по полю name_ru
+                    string query = "SELECT id, name_lat, time_last FROM plants WHERE name_ru = @name_ru";
+                    MySqlCommand command = new MySqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@name_ru", Path.GetFileNameWithoutExtension(fileName));
+
+                    using (MySqlDataReader reader = command.ExecuteReader())
                     {
-                        FileInfo fileInfo = new FileInfo(filePath);
-                        AddFotos.Add((
-                            fileName: Path.GetFileNameWithoutExtension(filePath), // Название файла без расширения
-                            fullPath: filePath,
-                            fileSize: fileInfo.Length,
-                            creationDate: fileInfo.CreationTime,
-                            status: "не обработано"
-                        ));
-                    }
-
-                    // Получаем путь из конфигурации catSubCutFotos
-                    string? catSubCutFotos = ConfigurationManager.AppSettings["catSubCutFotos"];
-                    if (string.IsNullOrEmpty(catSubCutFotos))
-                    {
-                        MessageBox.Show("Не найден параметр catSubCutFotos в конфигурации!", "Ошибка",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-
-                    // Строка подключения к БД
-                    string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
-
-                    // 3) Цикл обработки каждого файла
-                    using (MySqlConnection connection = new MySqlConnection(connectionString))
-                    {
-                        connection.Open();
-
-                        foreach (var foto in AddFotos)
+                        if (reader.Read())
                         {
-                            // Ищем совпадение по name_ru в таблице plants
-                            string selectQuery = "SELECT name_lat, time_last FROM plants WHERE name_ru = @name_ru";
-                            MySqlCommand selectCmd = new MySqlCommand(selectQuery, connection);
-                            selectCmd.Parameters.AddWithValue("@name_ru", foto.fileName);
+                            int plantId = reader.GetInt32("id");
+                            string nameLat = reader.GetString("name_lat");
+                            DateTime? timeLast = reader.IsDBNull(reader.GetOrdinal("time_last"))
+                                ? (DateTime?)null
+                                : reader.GetDateTime("time_last");
+                            reader.Close();
 
-                            using (MySqlDataReader reader = selectCmd.ExecuteReader())
+                            // Составление пути подкаталога
+                            string targetDirectory = Path.Combine(catSubCutFotosPath, nameLat);
+
+                            // Поиск самой новой фотографии в подкаталоге
+                            DateTime? fotoFromBD = null;
+                            if (Directory.Exists(targetDirectory))
                             {
-                                if (reader.Read())
+                                var imageFiles = Directory.GetFiles(targetDirectory, "*.*")
+                                    .Where(f => f.EndsWith(".jpg") || f.EndsWith(".jpeg") ||
+                                               f.EndsWith(".png") || f.EndsWith(".bmp") || f.EndsWith(".gif"));
+
+                                foreach (string existingPhoto in imageFiles)
                                 {
-                                    string nameLat = reader.GetString("name_lat");
-                                    DateTime? timeLastFromBD = reader.IsDBNull(reader.GetOrdinal("time_last"))
-                                        ? (DateTime?)null
-                                        : reader.GetDateTime("time_last");
-                                    reader.Close();
-
-                                    // Формируем путь подкаталога
-                                    string targetDirectory = Path.Combine(catSubCutFotos, nameLat);
-
-                                    // Если подкаталог существует
-                                    if (Directory.Exists(targetDirectory))
+                                    DateTime? takenDate = GetDateTakenFromImage(existingPhoto);
+                                    if (takenDate.HasValue)
                                     {
-                                        // Выбираем самую новую фотографию в подкаталоге
-                                        var directoryInfo = new DirectoryInfo(targetDirectory);
-                                        FileInfo? newestFile = directoryInfo.GetFiles("*.*")
-                                            .Where(f => f.Extension.ToLower() == ".jpg" ||
-                                                       f.Extension.ToLower() == ".jpeg" ||
-                                                       f.Extension.ToLower() == ".png" ||
-                                                       f.Extension.ToLower() == ".bmp" ||
-                                                       f.Extension.ToLower() == ".gif")
-                                            .OrderByDescending(f => f.CreationTime)
-                                            .FirstOrDefault();
-
-                                        DateTime? fotoFromBD = newestFile?.CreationTime;
-
-                                        // Сравниваем даты
-                                        if (fotoFromBD == null || foto.creationDate > fotoFromBD.Value)
-                                        {
-                                            // Копируем файл
-                                            string targetFilePath = Path.Combine(targetDirectory, Path.GetFileName(foto.fullPath));
-
-                                            // Если файл с таким именем существует, добавляем временную метку
-                                            if (File.Exists(targetFilePath))
-                                            {
-                                                string fileNameWithoutExt = Path.GetFileNameWithoutExtension(foto.fullPath);
-                                                string extension = Path.GetExtension(foto.fullPath);
-                                                string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-                                                targetFilePath = Path.Combine(targetDirectory, $"{fileNameWithoutExt}_{timestamp}{extension}");
-                                            }
-
-                                            File.Copy(foto.fullPath, targetFilePath, true);
-
-                                            // Обновляем статус в массиве
-                                            int index = AddFotos.FindIndex(f => f.fullPath == foto.fullPath);
-                                            var updatedFoto = AddFotos[index];
-                                            updatedFoto.status = "скопированно";
-                                            AddFotos[index] = updatedFoto;
-
-                                            // Обновляем поле time_last в таблице plants
-                                            string updateQuery = "UPDATE plants SET time_last = @time_last WHERE name_ru = @name_ru";
-                                            MySqlCommand updateCmd = new MySqlCommand(updateQuery, connection);
-                                            updateCmd.Parameters.AddWithValue("@time_last", foto.creationDate);
-                                            updateCmd.Parameters.AddWithValue("@name_ru", foto.fileName);
-                                            updateCmd.ExecuteNonQuery();
-                                        }
+                                        if (!fotoFromBD.HasValue || takenDate.Value > fotoFromBD.Value)
+                                            fotoFromBD = takenDate.Value;
                                     }
                                     else
                                     {
-                                        // Подкаталог не существует, создаем его
-                                        Directory.CreateDirectory(targetDirectory);
-
-                                        // Копируем файл
-                                        string targetFilePath = Path.Combine(targetDirectory, Path.GetFileName(foto.fullPath));
-                                        File.Copy(foto.fullPath, targetFilePath, true);
-
-                                        // Обновляем статус в массиве
-                                        int index = AddFotos.FindIndex(f => f.fullPath == foto.fullPath);
-                                        var updatedFoto = AddFotos[index];
-                                        updatedFoto.status = "скопированно (создан каталог)";
-                                        AddFotos[index] = updatedFoto;
-
-                                        // Обновляем поле time_last в таблице plants
-                                        string updateQuery = "UPDATE plants SET time_last = @time_last WHERE name_ru = @name_ru";
-                                        MySqlCommand updateCmd = new MySqlCommand(updateQuery, connection);
-                                        updateCmd.Parameters.AddWithValue("@time_last", foto.creationDate);
-                                        updateCmd.Parameters.AddWithValue("@name_ru", foto.fileName);
-                                        updateCmd.ExecuteNonQuery();
+                                        // Если нет даты съёмки, используем дату создания файла
+                                        DateTime fileCreationDate = File.GetCreationTime(existingPhoto);
+                                        if (!fotoFromBD.HasValue || fileCreationDate > fotoFromBD.Value)
+                                            fotoFromBD = fileCreationDate;
                                     }
                                 }
-                                else
-                                {
-                                    reader.Close();
-                                    // Если совпадение не найдено, обновляем статус
-                                    int index = AddFotos.FindIndex(f => f.fullPath == foto.fullPath);
-                                    var updatedFoto = AddFotos[index];
-                                    updatedFoto.status = "не найдено в БД";
-                                    AddFotos[index] = updatedFoto;
-                                }
+                            }
+
+                            // 3.1) Если фотография из массива новее
+                            if (!fotoFromBD.HasValue || fotoFromArray > fotoFromBD.Value)
+                            {
+                                // Создание подкаталога если не существует
+                                if (!Directory.Exists(targetDirectory))
+                                    Directory.CreateDirectory(targetDirectory);
+
+                                // Копирование файла
+                                string targetPath = Path.Combine(targetDirectory, fileName);
+                                File.Copy(filePath, targetPath, true);
+
+                                // Обновление массива
+                                foto[4] = "скопированно";
+
+                                // Обновление поля time_last в таблице
+                                string updateQuery = "UPDATE plants SET time_last = @time_last WHERE id = @id";
+                                MySqlCommand updateCommand = new MySqlCommand(updateQuery, connection);
+                                updateCommand.Parameters.AddWithValue("@time_last", fotoFromArray);
+                                updateCommand.Parameters.AddWithValue("@id", plantId);
+                                updateCommand.ExecuteNonQuery();
+                            }
+                            // 3.2) Иначе
+                            else
+                            {
+                                foto[4] = "не подходит";
                             }
                         }
-                    }
-
-                    // 4) Записываем данные в файл
-                    string outputFile = @"D:\ALLZSV\myHomeland\floraZSV\addFotos.txt";
-                    using (StreamWriter writer = new StreamWriter(outputFile, false, Encoding.UTF8))
-                    {
-                        // Записываем заголовок
-                        writer.WriteLine("Название файла\tПолный путь\tРазмер файла\tДата создания\tСтатус");
-
-                        foreach (var foto in AddFotos)
+                        else
                         {
-                            writer.WriteLine($"{foto.fileName}\t{foto.fullPath}\t{foto.fileSize}\t{foto.creationDate:yyyy-MM-dd HH:mm:ss}\t{foto.status}");
+                            reader.Close();
+                            foto[4] = "растение не найдено";
                         }
                     }
-
-                    MessageBox.Show($"Обработано {AddFotos.Count} файлов. Результат сохранен в файл:\n{outputFile}",
-                        "Завершено", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
+
+            // 4) Запись массива в файл
+            string outputFilePath = @"D:\ALLZSV\myHomeland\floraZSV\addFotos.txt";
+            using (StreamWriter writer = new StreamWriter(outputFilePath, false, Encoding.UTF8))
+            {
+                // Заголовки
+                writer.WriteLine("Название файла\tПолный путь\tРазмер файла\tДата создания\tДля указаний");
+
+                // Данные
+                foreach (string[] foto in AddFotos)
+                {
+                    writer.WriteLine(string.Join("\t", foto));
+                }
+            }
+
+            MessageBox.Show($"Обработка завершена. Результат сохранен в файл:\n{outputFilePath}",
+                            "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        // Вспомогательный метод для получения даты съёмки из EXIF
+        private DateTime? GetDateTakenFromImage(string filePath)
+        {
+            try
+            {
+                using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                using (Image image = Image.FromStream(fs, false, false))
+                {
+                    if (image.PropertyItems.Any(p => p.Id == 0x9003)) // PropertyTagExifDTOriginal
+                    {
+                        byte[] bytes = image.GetPropertyItem(0x9003).Value;
+                        string dateTaken = Encoding.ASCII.GetString(bytes).TrimEnd('\0');
+                        return DateTime.ParseExact(dateTaken, "yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture);
+                    }
+                }
+            }
+            catch
+            {
+                // Если не удалось прочитать EXIF, возвращаем null
+                return null;
+            }
+            return null;
         }
     }
     
