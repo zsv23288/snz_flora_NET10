@@ -7,6 +7,7 @@ using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
@@ -293,7 +294,7 @@ namespace Menu_14
         {
             // сегодня 14.05.26 попробуем ещё раз
             // 1) Выбор файлов в указанном каталоге
-            string catSubCutFotos = ConfigurationManager.AppSettings["catSubCutFotos"];
+            string? catSubCutFotos = ConfigurationManager.AppSettings["catSubCutFotos"];
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.InitialDirectory = catSubCutFotos;
@@ -325,7 +326,7 @@ namespace Menu_14
 
             // Строка подключения к БД
             string connectionString = ConfigurationManager.ConnectionStrings["MySqlConnection"].ConnectionString;
-            string catSubCutFotosPath = ConfigurationManager.AppSettings["catSubCutFotos"];
+            string? catSubCutFotosPath = ConfigurationManager.AppSettings["catSubCutFotos"];
 
             // 3) Цикл обработки
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -356,8 +357,8 @@ namespace Menu_14
                             reader.Close();
 
                             // Составление пути подкаталога
-                            string targetDirectory = Path.Combine(catSubCutFotosPath, nameLat);
-
+                            //        string targetDirectory = Path.Combine(catSubCutFotosPath, nameLat);
+                            string targetDirectory = Path.Combine(catSubCutFotosPath ?? string.Empty, nameLat ?? string.Empty);
                             // Поиск самой новой фотографии в подкаталоге
                             DateTime? fotoFromBD = null;
                             if (Directory.Exists(targetDirectory))
@@ -445,11 +446,15 @@ namespace Menu_14
                 using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
                 using (Image image = Image.FromStream(fs, false, false))
                 {
-                    if (image.PropertyItems.Any(p => p.Id == 0x9003)) // PropertyTagExifDTOriginal
+                    PropertyItem? propItem = image.GetPropertyItem(0x9003);
+                    if (propItem != null && propItem.Value != null)
                     {
-                        byte[] bytes = image.GetPropertyItem(0x9003).Value;
+                        byte[] bytes = propItem.Value;
                         string dateTaken = Encoding.ASCII.GetString(bytes).TrimEnd('\0');
-                        return DateTime.ParseExact(dateTaken, "yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture);
+                        if (!string.IsNullOrEmpty(dateTaken))
+                        {
+                            return DateTime.ParseExact(dateTaken, "yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture);
+                        }
                     }
                 }
             }
