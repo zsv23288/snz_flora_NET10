@@ -1,0 +1,10 @@
+  DeepSeekAndHisKey
+  fromVit_01
+* goWithoutII
+  master
+  myNewPath_02
+  remotes/origin/DeepSeekAndHisKey
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/goWithoutII
+  remotes/origin/master
+  remotes/origin/myNewPath_02

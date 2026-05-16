@@ -1,0 +1,31 @@
+* df78c45 (HEAD -> goWithoutII) Исправлены Предупреждения. И даже сработало!
+| * c70b4fa (origin/goWithoutII) Исправлены Предупреждения
+|/  
+* f243e77 То же самое из DeepSeek. Есть 6 предупреждений.
+* fa4b73d Переписана версия под notepad++ 12.5.26
+* 499c726 Ошибка нашлась ошибка  в постановке задачи. Menu_14.cs строка 354 ...
+* bd82029 1) Перупреждения искоренены!. 2) В App.cofig добавления   <connectionStrings>     <add name="MySqlConnection"          connectionString="Server=localhost;Database=snz_flora;Uid=your_username;Pwd=your_password;" />   </connectionStrings>
+* 74a7bba Из DeepSeek "Вот готовый код для метода"
+* af5f213 добавим фото в БД из ПК, и (возможно) исправит Время
+| * e459aad (origin/DeepSeekAndHisKey, DeepSeekAndHisKey) DeepSeek хочет бабок...
+| * 462f375 начнём с ключём от DeepSeek   sk-8cf4e94d86374db48b0994dfa5a2cf8d
+|/  
+| * 9a77fcb (myNewPath_02) Оставим ключи от Google Chrom
+| * 71414c1 (origin/myNewPath_02) осталось борьба с ключами ИИ Google
+| * f72f53e осталось одно предупреждение в FormLinks.cs, НО работает!
+| * 229b479 вспомнился Озорнин - то же не писал комментариев! Начну разбираться сам.
+|/  
+| * ef5dc25 (fromVit_01) начнём подключать "чужой код"
+|/  
+* ab9c949 (master) Попытка использовать ico не удалась
+* ecd4ea7 (origin/master, origin/HEAD) Подключены Microsoft.Extensions.AI Microsoft.Extensions.AI.OpenAI HtmlAgilityPack
+* 669d538 убраны "опечатки". Пойдём после  .NET10
+* 5551e2d Вызов Инструкции Пользователя через WinWord заработал.
+* a8ee976 Код questionnaireEdit исправлен.
+* cfe41f7 в FormLinks осталось два предупреждения. Про ListBox стр. 154.
+* f2e2e66 Убраны Errors + Warnings в Menu_14.cs
+* 831e762 почистил setMethods.cs
+* 9ebd0f4 Добавил app.cunfig в проект
+* e98957d Новая жизнь. Установлено .NET10, 14-ть ошбок или Warning
+* ce2b666 Add project files.
+* c20b1e4 Add .gitattributes and .gitignore.

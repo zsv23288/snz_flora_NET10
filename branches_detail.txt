@@ -1,0 +1,5 @@
+  DeepSeekAndHisKey e459aad [origin/DeepSeekAndHisKey] DeepSeek хочет бабок...
+  fromVit_01        ef5dc25 начнём подключать "чужой код"
+* goWithoutII       df78c45 [origin/goWithoutII: ahead 1, behind 1] Исправлены Предупреждения. И даже сработало!
+  master            ab9c949 [origin/master: ahead 1] Попытка использовать ico не удалась
+  myNewPath_02      9a77fcb [origin/myNewPath_02: ahead 1] Оставим ключи от Google Chrom
